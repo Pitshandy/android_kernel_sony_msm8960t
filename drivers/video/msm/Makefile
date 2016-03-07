@@ -91,7 +91,7 @@ obj-$(CONFIG_FB_MSM_MIPI_DSI_SIMULATOR) += mipi_simulator.o
 obj-$(CONFIG_FB_MSM_MIPI_DSI_I2C) += mipi_dsi_i2c.o
 
 # ADV7533
-obj-y += adv7533.o
+obj-$(CONFIG_FB_MSM_ADV7533) += adv7533.o
 
 # Sony MSM8x60
 ifeq ($(CONFIG_FB_MSM_MIPI_DSI_RENESAS_R63306),y)
