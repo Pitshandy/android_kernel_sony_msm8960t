@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,14 +19,16 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 #if !defined( __SAP_CH_SELECT_H )
 #define __SAP_CH_SELECT_H
 
-/*
-* Copyright (c) 2012-2013 Qualcomm Atheros, Inc.
-* All Rights Reserved.
-* Qualcomm Atheros Confidential and Proprietary.
-*/
+
 /*===========================================================================
 
                       s a p C h S e l e c t . h
@@ -42,9 +44,6 @@
   Are listed for each API below. 
   
   
-  Copyright (c) 2010 QUALCOMM Incorporated.
-  All Rights Reserved.
-  Qualcomm Confidential and Proprietary
 ===========================================================================*/
 
 /*===========================================================================
@@ -130,6 +129,7 @@ typedef struct {
     v_U16_t bssCount;   // bss found in scanresult for this channel
     v_S31_t rssiAgr;    // Max value of rssi among all BSS(es) from scanresult for this channel
     v_U32_t weight;     // Weightage of this channel
+    v_U32_t weight_copy; //copy of the orignal weight
     v_BOOL_t valid;     // Is this a valid center frequency for regulatory domain
 } tSapSpectChInfo;//tDfsSpectChInfo;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,28 +19,36 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
-/** ------------------------------------------------------------------------- * 
-    ------------------------------------------------------------------------- *  
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
 
-  
-    \file cssDebug.h
-  
+/** ------------------------------------------------------------------------- *
+    ------------------------------------------------------------------------- *
+
+
+    \file smsDebug.h
+
     Define debug log interface for SMS.
-  
-   Copyright (C) 2006 Airgo Networks, Incorporated
- 
+
    ========================================================================== */
-   
+
 #ifndef SMS_DEBUG_H__
 #define SMS_DEBUG_H__
-
-//#include <stdio.h>
-//#include <stdarg.h>
 
 #include "utilsApi.h"
 #include "sirDebug.h"
 
-void smsLog(tpAniSirGlobal pMac, tANI_U32 loglevel, const char *pString,...); 
-void pmcLog(tpAniSirGlobal pMac, tANI_U32 loglevel, const char *pString,...);
+#if !defined(__printf)
+#define __printf(a,b)
+#endif
 
-#endif // __HAL_DEBUG_H__
+void __printf(3,4)
+smsLog(tpAniSirGlobal pMac, tANI_U32 loglevel, const char *pString, ...);
+
+void __printf(3,4)
+pmcLog(tpAniSirGlobal pMac, tANI_U32 loglevel, const char *pString, ...);
+
+#endif // __SMS_DEBUG_H__

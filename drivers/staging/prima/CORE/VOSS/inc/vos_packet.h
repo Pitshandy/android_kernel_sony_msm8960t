@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2011-2014 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 #if !defined( __VOS_PKT_H )
 #define __VOS_PKT_H
 
@@ -30,9 +36,6 @@
                
    Network Protocol packet/buffer support interfaces 
   
-   Copyright 2008 (c) Qualcomm, Incorporated.  All Rights Reserved.
-   
-   Qualcomm Confidential and Proprietary.
   
   ========================================================================*/
 
@@ -47,7 +50,9 @@
 /*-------------------------------------------------------------------------- 
   Preprocessor definitions and constants
   ------------------------------------------------------------------------*/
-
+#define VOS_PKT_PROTO_TYPE_EAPOL   0x02
+#define VOS_PKT_PROTO_TYPE_DHCP    0x04
+#define VOS_PKT_PROTO_TYPE_ARP     0x08
 /*-------------------------------------------------------------------------- 
   Type declarations
   ------------------------------------------------------------------------*/
@@ -1111,4 +1116,22 @@ VOS_STATUS vos_pkt_get_available_buffer_pool
 */
 v_SIZE_t vos_pkt_get_num_of_rx_raw_pkts(void);
 
+/**
+  @brief vos_pkt_get_num_of_rx_pkt_alloc_failures() - Get the number of times
+         skb allocation failed while replenishing packets
+
+
+  @param
+       NONE
+  @return
+       v_SIZE_t the number of times packet allocation failed
+
+*/
+v_SIZE_t vos_pkt_get_num_of_rx_pkt_alloc_failures(void);
+
+v_U8_t vos_pkt_get_proto_type
+(
+   void  *pskb,
+   v_U8_t tracking_map
+);
 #endif  // !defined( __VOS_PKT_H )

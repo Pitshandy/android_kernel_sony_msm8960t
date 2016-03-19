@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2011-2015 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -20,8 +20,13 @@
  */
 
 /*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
+/*
  *
- * Airgo Networks, Inc proprietary. All rights reserved.
  * This file limSecurityUtils.h contains the utility definitions
  * related to WEP encryption/decryption etc.
  * Author:        Chandra Modumudi
@@ -50,6 +55,7 @@ void               limDeletePreAuthNode(tpAniSirGlobal, tSirMacAddr);
 void               limReleasePreAuthNode(tpAniSirGlobal pMac, tpLimPreAuthNode pAuthNode);
 void               limRestoreFromAuthState(tpAniSirGlobal,
                                            tSirResultCodes, tANI_U16,tpPESession);
+tANI_U8 limDeleteOpenAuthPreAuthNode(tpAniSirGlobal pMac);
 
 // Encryption/Decryption related functions
 tCfgWepKeyEntry    *limLookUpKeyMappings(tSirMacAddr);

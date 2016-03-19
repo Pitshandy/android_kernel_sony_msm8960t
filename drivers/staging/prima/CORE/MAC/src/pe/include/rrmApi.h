@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2014 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -20,16 +20,17 @@
  */
 
 /*
- * */
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
+
 /**=========================================================================
   
   \file  rrmApi.h
   
   \brief RRM APIs
-  
-   Copyright 2008 (c) Qualcomm, Incorporated.  All Rights Reserved.
-   
-   Qualcomm Confidential and Proprietary.
   
   ========================================================================*/
 
@@ -41,7 +42,10 @@
 #define RRM_MIN_TX_PWR_CAP    13
 #define RRM_MAX_TX_PWR_CAP    19
 
-tANI_U8 rrmGetMinOfMaxTxPower(tPowerdBm regMax, tPowerdBm apTxPower);
+#define RRM_BCN_RPT_NO_BSS_INFO    0
+#define RRM_BCN_RPT_MIN_RPT        1
+
+tANI_U8 rrmGetMinOfMaxTxPower(tpAniSirGlobal pMac, tPowerdBm regMax, tPowerdBm apTxPower);
 
 extern tSirRetStatus rrmInitialize(tpAniSirGlobal pMac);
 

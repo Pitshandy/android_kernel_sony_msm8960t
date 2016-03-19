@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,7 +19,11 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
-
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
 
 /**=========================================================================
   
@@ -29,9 +33,6 @@
                
    Definitions for platform Windows and with legacy UMAC.
   
-   Copyright 2010 (c) Qualcomm, Incorporated.  All Rights Reserved.
-   
-   Qualcomm Confidential and Proprietary.
   
   ========================================================================*/
 
@@ -58,7 +59,7 @@ wpt_status wpalMutexInit(wpt_mutex *pMutex)
    if( vos_lock_init( (vos_lock_t*)pMutex  ) != VOS_STATUS_SUCCESS )
    {
       WPAL_TRACE(eWLAN_MODULE_PAL, eWLAN_PAL_TRACE_LEVEL_ERROR, 
-                 " mutex init fail\n");
+                 " mutex init fail");
       return eWLAN_PAL_STATUS_E_FAILURE;
    }
 
@@ -79,7 +80,7 @@ wpt_status wpalMutexDelete(wpt_mutex *pMutex)
    if( vos_lock_destroy( (vos_lock_t*)pMutex  ) != VOS_STATUS_SUCCESS )
    {
       WPAL_TRACE(eWLAN_MODULE_PAL, eWLAN_PAL_TRACE_LEVEL_ERROR, 
-                 " mutex delete fail\n");
+                 " mutex delete fail");
       return eWLAN_PAL_STATUS_E_FAILURE;
    }
 
@@ -100,7 +101,7 @@ wpt_status wpalMutexAcquire(wpt_mutex *pMutex)
    if( vos_lock_acquire( (vos_lock_t*)pMutex  ) != VOS_STATUS_SUCCESS )
    {
       WPAL_TRACE(eWLAN_MODULE_PAL, eWLAN_PAL_TRACE_LEVEL_ERROR, 
-                 " mutex acquire fail\n");
+                 " mutex acquire fail");
       return eWLAN_PAL_STATUS_E_FAILURE;
    }
 
@@ -121,7 +122,7 @@ wpt_status wpalMutexRelease(wpt_mutex *pMutex)
    if( vos_lock_release( (vos_lock_t*)pMutex ) != VOS_STATUS_SUCCESS )
    {
       WPAL_TRACE(eWLAN_MODULE_PAL, eWLAN_PAL_TRACE_LEVEL_ERROR, 
-                 " mutex release\n");
+                 " mutex release");
       return eWLAN_PAL_STATUS_E_FAILURE;
    }
 
@@ -142,7 +143,7 @@ wpt_status wpalEventInit(wpt_event *pEvent)
    if( vos_event_init( (vos_event_t*)pEvent ) != VOS_STATUS_SUCCESS )
    {
       WPAL_TRACE(eWLAN_MODULE_PAL, eWLAN_PAL_TRACE_LEVEL_ERROR, 
-                 " create event fail\n");
+                 " create event fail");
       return eWLAN_PAL_STATUS_E_FAILURE;
    }
 
@@ -164,7 +165,7 @@ wpt_status wpalEventDelete(wpt_event *pEvent)
    if( vos_event_destroy( (vos_event_t*)pEvent ) != VOS_STATUS_SUCCESS )
    {
       WPAL_TRACE(eWLAN_MODULE_PAL, eWLAN_PAL_TRACE_LEVEL_ERROR, 
-                 " delete event fail\n");
+                 " delete event fail");
       return eWLAN_PAL_STATUS_E_FAILURE;
    }
 

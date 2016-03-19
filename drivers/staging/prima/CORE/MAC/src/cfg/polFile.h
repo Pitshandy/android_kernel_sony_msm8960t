@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 //==================================================================
 //
 //  File:         polFile.h
@@ -27,7 +33,7 @@
 //
 //  Author:       Larry Cawley
 // 
-//  Copyright 2002, Woodside Networks, Inc.  All rights reserved.
+//
 //
 //  Change History:
 //  04/09/2002 - LAC - Initial version.
@@ -118,8 +124,8 @@ typedef struct sPolFileHeader {
 
   tPolFileVersion FileVersion;
   tPolFileVersion HWCapabilities;
-  unsigned long   FileLength;
-  unsigned long   NumDirectoryEntries;
+  unsigned int   FileLength;
+  unsigned int   NumDirectoryEntries;
 
 } tPolFileHeader;
 
@@ -138,9 +144,9 @@ typedef enum ePolFileDirTypes {
 
 typedef struct sPolFileDirEntry {
 
-  unsigned long DirEntryType;
-  unsigned long DirEntryFileOffset;
-  unsigned long DirEntryLength;
+  unsigned int DirEntryType;
+  unsigned int DirEntryFileOffset;
+  unsigned int DirEntryLength;
 
 } tPolFileDirEntry;
 

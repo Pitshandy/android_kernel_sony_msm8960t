@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2011-2015 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -20,8 +20,13 @@
  */
 
 /*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
+/*
  *
- * Airgo Networks, Inc proprietary. All rights reserved.
  * This file limRoamingAlgo.cc contains the code for LIM
  * algorithms.
  * Author:        Chandra Modumudi
@@ -32,7 +37,7 @@
  *
  */
 
-#include "wniCfgSta.h"
+#include "wniCfg.h"
 #include "cfgApi.h"
 #include "limTypes.h"
 #include "limTimerUtils.h"
@@ -147,8 +152,8 @@ void limTriggerBackgroundScan(tpAniSirGlobal pMac)
     tSirMacAddr      bcAddr = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
     tSirBackgroundScanMode   backgroundScan;
 
-    PELOG1(limLog(pMac, LOG1, FL("Background Scan: %d success, %d consec fail "),
-        pMac->lim.gLimNumOfBackgroundScanSuccess,  pMac->lim.gLimNumOfConsecutiveBkgndScanFailure);)
+    limLog(pMac, LOG1, FL("Background Scan: %d success, %d consec fail "),
+        pMac->lim.gLimNumOfBackgroundScanSuccess,  pMac->lim.gLimNumOfConsecutiveBkgndScanFailure);
 
     if (! limIsBackgroundScanAllowed(pMac))
     {
@@ -175,7 +180,7 @@ void limTriggerBackgroundScan(tpAniSirGlobal pMac)
     smeScanReq.messageType = eWNI_SME_SCAN_REQ;
     smeScanReq.length      = sizeof(tSirSmeScanReq);
     smeScanReq.bssType     = eSIR_INFRASTRUCTURE_MODE;
-    palCopyMemory( pMac->hHdd, (tANI_U8 *) smeScanReq.bssId,
+    vos_mem_copy( (tANI_U8 *) smeScanReq.bssId,
                   (tANI_U8 *) &bcAddr, sizeof(tSirMacAddr));
  
     if (wlan_cfgGetStr(pMac, WNI_CFG_SSID,
@@ -259,7 +264,9 @@ void limTriggerBackgroundScan(tpAniSirGlobal pMac)
     smeScanReq.uIEFieldOffset = sizeof(tSirSmeScanReq);
     
     backgroundScan = limSelectsBackgroundScanMode(pMac);
-    PELOG1(limLog(pMac, LOG1, FL("Performing (mode %d) Background Scan "), backgroundScan);)
+    PELOG1(limLog(pMac, LOG1, FL("Performing (mode %s (%d)) Background Scan"),
+           lim_BackgroundScanModetoString(backgroundScan),
+           backgroundScan);)
     smeScanReq.backgroundScanMode = backgroundScan;
     
     //determine whether to send the results or not, If so, notify the BG scan results to SME

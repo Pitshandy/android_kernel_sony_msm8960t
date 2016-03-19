@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 /*===========================================================================
 
                        W L A N _ Q C T _ W D I _ S T A . C
@@ -36,9 +42,6 @@
   Are listed for each API below.
 
 
-  Copyright (c) 2008 QUALCOMM Incorporated.
-  All Rights Reserved.
-  Qualcomm Confidential and Proprietary
 ===========================================================================*/
 
 /*===========================================================================
@@ -629,6 +632,35 @@ WDI_STATableGetStaAddr
     else
         return WDI_STATUS_E_FAILURE;
 }/*WDI_STATableGetStaAddr*/
+
+/**
+ @brief WDI_STATableGetStaMacAddr - get station MAC address
+
+ @param  pWDICtx:  WDI Context pointer
+         ucSTAIdx:  station index
+         pStaAddr: output station MAC address
+
+ @see
+ @return Result of the function call
+*/
+WDI_Status
+WDI_STATableGetStaMacAddr
+(
+    WDI_ControlBlockType*  pWDICtx,
+    wpt_uint8              ucSTAIdx,
+    wpt_macAddr*           staMacAddr
+)
+{
+    WDI_StaStruct* pSTATable = (WDI_StaStruct*) pWDICtx->staTable;
+    if ((ucSTAIdx < pWDICtx->ucMaxStations) && (pSTATable[ucSTAIdx].valid))
+    {
+        wpalMemoryCopy(staMacAddr, pSTATable[ucSTAIdx].staAddr,
+                WDI_MAC_ADDR_LEN);
+        return WDI_STATUS_SUCCESS;
+    }
+    else
+        return WDI_STATUS_E_FAILURE;
+}/*WDI_STATableGetStaMacAddr*/
 
 /**
  @brief WDI_STATableSetStaAddr - set station address

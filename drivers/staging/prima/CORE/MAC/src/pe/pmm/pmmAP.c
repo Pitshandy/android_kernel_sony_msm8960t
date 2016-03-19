@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2015 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -20,8 +20,13 @@
  */
 
 /*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
+/*
  *
- * Airgo Networks, Inc proprietary. All rights reserved.
  * This file pmmAP.cc contains AP PM functions
  *
  * Author:      Sandesh Goel
@@ -39,7 +44,7 @@
 #include "schApi.h"
 #include "limApi.h"
 #include "cfgApi.h"
-#include "wniCfgSta.h"
+#include "wniCfg.h"
 
 #include "pmmApi.h"
 #include "pmmDebug.h"

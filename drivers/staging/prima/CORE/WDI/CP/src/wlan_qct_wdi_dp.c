@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2014 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -18,6 +18,15 @@
  * TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  * PERFORMANCE OF THIS SOFTWARE.
  */
+
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
+
+
 
 /*===========================================================================
 
@@ -39,9 +48,6 @@
   Are listed for each API below.
 
 
-  Copyright (c) 2010 QUALCOMM Incorporated.
-  All Rights Reserved.
-  Qualcomm Confidential and Proprietary
 ===========================================================================*/
 
 /*===========================================================================
@@ -356,6 +362,9 @@ WDI_TxBdFastFwd
 
     ucTxFlag:    different option setting for TX.
 
+    ucProtMgmtFrame: for management frames, whether the frame is
+                     protected (protect bit is set in FC)
+
     uTimeStamp:      Timestamp when the frame was received from HDD. (usec)
    
    @return
@@ -373,9 +382,12 @@ WDI_FillTxBd
     wpt_uint8*             pTid, 
     wpt_uint8              ucDisableFrmXtl, 
     void*                  pTxBd, 
-    wpt_uint8              ucTxFlag, 
+    wpt_uint32             ucTxFlag,
+    wpt_uint8              ucProtMgmtFrame,
     wpt_uint32             uTimeStamp,
-    wpt_uint8*             staIndex
+    wpt_uint8              isEapol,
+    wpt_uint8*             staIndex,
+    wpt_uint32             txBdToken
 )
 {
     wpt_uint8              ucTid        = *pTid; 
@@ -396,11 +408,12 @@ WDI_FillTxBd
     /*------------------------------------------------------------------------
        Get type and subtype of the frame first 
     ------------------------------------------------------------------------*/
+    pBd->txBdToken = txBdToken;
     ucType = (ucTypeSubtype & WDI_FRAME_TYPE_MASK) >> WDI_FRAME_TYPE_OFFSET;
     ucSubType = (ucTypeSubtype & WDI_FRAME_SUBTYPE_MASK);
 
     WPAL_TRACE( eWLAN_MODULE_DAL_CTRL, eWLAN_PAL_TRACE_LEVEL_WARN, 
-               "Type: %d/%d, MAC S: %08x. MAC D: %08x., Tid=%d, frmXlat=%d, pTxBD=%08x ucTxFlag 0x%X\n", 
+               "Type: %d/%d, MAC S: %08x. MAC D: %08x., Tid=%d, frmXlat=%d, pTxBD=%p ucTxFlag 0x%X",
                 ucType, ucSubType, 
                 *((wpt_uint32 *) pAddr2), 
                *((wpt_uint32 *) pDestMacAddr), 
@@ -445,6 +458,17 @@ WDI_FillTxBd
         pBd->dpuRF = BMUWQ_BTQM_TX_MGMT; 
     }
 
+    if (ucTxFlag & WDI_USE_FW_IN_TX_PATH)
+    {
+        WPAL_TRACE( eWLAN_MODULE_DAL_CTRL, eWLAN_PAL_TRACE_LEVEL_INFO,
+          "iType: %d SubType %d, MAC S: %08x. MAC D: %08x., Tid=%d",
+                    ucType, ucSubType,
+                    *((wpt_uint32 *) pAddr2),
+                   *((wpt_uint32 *) pDestMacAddr),
+                    ucTid);
+
+        pBd->dpuRF = BMUWQ_FW_DPU_TX;
+    }
 
     pBd->tid           = ucTid; 
     // Clear the reserved field as this field is used for defining special 
@@ -527,6 +551,20 @@ WDI_FillTxBd
            pBd->bdRate = WDI_BDRATE_CTRL_FRAME;
         }
 #endif
+
+        if(ucTxFlag & WDI_USE_BD_RATE_1_MASK)
+        {
+            pBd->bdRate = WDI_BDRATE_BCDATA_FRAME;
+        }
+        else if(ucTxFlag & WDI_USE_BD_RATE_2_MASK)
+        {
+            pBd->bdRate = WDI_BDRATE_BCMGMT_FRAME;
+        }
+        else if(ucTxFlag & WDI_USE_BD_RATE_3_MASK)
+        {
+            pBd->bdRate = WDI_BDRATE_CTRL_FRAME;
+        }
+
         pBd->rmf    = WDI_RMF_DISABLED;     
 
         /* sanity: Might already be set by caller, but enforce it here again */
@@ -655,7 +693,8 @@ WDI_FillTxBd
         /* Mark the BD could not be reused */
         uTxBdSignature = WDI_TXBD_SIG_MGMT_MAGIC; 
 #endif
-        if(ucTxFlag & WDI_USE_SELF_STA_REQUESTED_MASK)
+        if((ucTxFlag & WDI_USE_SELF_STA_REQUESTED_MASK) &&
+            !(ucIsRMF && ucProtMgmtFrame))
         {
 #ifdef HAL_SELF_STA_PER_BSS
             // Get the (self) station index from ADDR2, which should be the self MAC addr
@@ -664,10 +703,12 @@ WDI_FillTxBd
            if (WDI_STATUS_SUCCESS != wdiStatus) 
            {
                 WPAL_TRACE(eWLAN_MODULE_DAL_DATA, eWLAN_PAL_TRACE_LEVEL_ERROR, "WDI_STATableFindStaidByAddr failed");
+                WPAL_TRACE(eWLAN_MODULE_DAL_DATA, eWLAN_PAL_TRACE_LEVEL_ERROR, "STA ID = %d " MAC_ADDRESS_STR,
+                                        ucStaId, MAC_ADDR_ARRAY(*(wpt_macAddr*)pAddr2));
                 return WDI_STATUS_E_NOT_ALLOWED;
            }
 #else
-            ucStaId = pWDICtx->ucSelfStaId;
+           ucStaId = pWDICtx->ucSelfStaId;
 #endif
         }
         else
@@ -794,7 +835,9 @@ WDI_FillTxBd
               }
               ucStaId = pBSSSes->bcastStaIdx;
            }
-         }    
+         }
+
+        WPAL_TRACE(eWLAN_MODULE_DAL_DATA, eWLAN_PAL_TRACE_LEVEL_INFO,"StaId:%d and ucTxFlag:%02x", ucStaId, ucTxFlag);
 
         pBd->staIndex = ucStaId;
         
@@ -825,6 +868,7 @@ WDI_FillTxBd
 
             if(ucIsRMF && pSta->rmfEnabled)
             {
+                pBd->dpuNE = !ucProtMgmtFrame;
                 pBd->rmf = 1;
                 if(!ucUnicastDst)
                     pBd->dpuDescIdx = pSta->bcastMgmtDpuIndex; /* IGTK */
@@ -886,16 +930,26 @@ WDI_FillTxBd
             return VOS_STATUS_E_FAILURE;
         } */
 #ifdef WLAN_SOFTAP_VSTA_FEATURE
-       // if this is a Virtual Station then change the DPU Routing Flag so
+       // if this is a Virtual Station or statype is TDLS and trig enabled mask
+       // set then change the DPU Routing Flag so
        // that the frame will be routed to Firmware for queuing & transmit
-       if (IS_VSTA_IDX(ucStaId))
+       if (IS_VSTA_IDX(ucStaId) ||
+                 (
+#ifdef FEATURE_WLAN_TDLS
+                  (ucSTAType == WDI_STA_ENTRY_TDLS_PEER ) &&
+#endif
+                  (ucTxFlag & WDI_TRIGGER_ENABLED_AC_MASK)) || isEapol)
        {
+          WPAL_TRACE(eWLAN_MODULE_DAL_DATA, eWLAN_PAL_TRACE_LEVEL_INFO,
+          "Sending EAPOL pakcet over WQ5 MAC S: %08x. MAC D: %08x.",
+                    *((wpt_uint32 *) pAddr2),
+                   *((wpt_uint32 *) pDestMacAddr));
            pBd->dpuRF = BMUWQ_FW_DPU_TX;
        }
 #endif
 
-    } 
-    
+    }
+
     /*------------------------------------------------------------------------
        Over SDIO bus, SIF won't swap data bytes to/from data FIFO. 
        In order for MAC modules to recognize BD in Riva's default endian
@@ -909,7 +963,7 @@ WDI_FillTxBd
        byte order */
     pBd->txBdSignature = uTxBdSignature ;
 #endif        
-    
+
     return wdiStatus;
 }/*WDI_FillTxBd*/
 
@@ -994,10 +1048,10 @@ WDI_SwapTxBd(wpt_uint8 *pBd)
 /**
  @brief WDI_RxAmsduBdFix - fix for HW issue for AMSDU 
 
-  
+
  @param   pWDICtx:       Context to the WDI
           pBDHeader - pointer to the BD header
-  
+
  @return None
 */
 void 

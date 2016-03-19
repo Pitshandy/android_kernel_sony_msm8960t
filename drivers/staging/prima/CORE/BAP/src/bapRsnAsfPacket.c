@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -20,7 +20,12 @@
  */
 
 /*
- * Woodside Networks, Inc proprietary. All rights reserved.
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
+/*
  * File: $File: //depot/software/projects/feature_branches/nova_phase1/ap/apps/asf/aniAsfPacket.c $
  * Contains definitions for packet manipulation routines that make it
  * easy to create and parse multi-layered network frames. This module

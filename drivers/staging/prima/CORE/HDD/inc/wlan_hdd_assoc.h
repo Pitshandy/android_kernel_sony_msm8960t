@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,19 +19,29 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
+
+
+
 #if !defined( HDD_CONNECTION_H__ ) 
 #define HDD_CONNECTION_H__
 #include <wlan_hdd_mib.h>
-#define HDD_MAX_NUM_IBSS_STA ( 9 )
+#define HDD_MAX_NUM_IBSS_STA ( 32 )
 #ifdef FEATURE_WLAN_TDLS
 #define HDD_MAX_NUM_TDLS_STA ( 8 )
 #define TDLS_STA_INDEX_VALID(staId) \
-                          (((staId) >= 4) && ((staId) < 0xFF))
+                          (((staId) >= 3) && ((staId) < 0xFF))
 #endif
 #define TKIP_COUNTER_MEASURE_STARTED 1
 #define TKIP_COUNTER_MEASURE_STOPED  0 
 /* Timeout (in ms) for Link to Up before Registering Station */
 #define ASSOC_LINKUP_TIMEOUT 60
+#define IBSS_BROADCAST_STAID 0
 typedef enum 
 {
    /** Not associated in Infra or participating in an IBSS / Ad-hoc network.*/
@@ -106,6 +116,7 @@ typedef struct hdd_mon_ctx_s  hdd_mon_ctx_t;
 
 
 extern v_BOOL_t hdd_connIsConnected( hdd_station_ctx_t *pHddStaCtx );
+eCsrBand hdd_connGetConnectedBand( hdd_station_ctx_t *pHddStaCtx );
 extern eHalStatus hdd_smeRoamCallback( void *pContext, tCsrRoamInfo *pRoamInfo, v_U32_t roamId, 
                                 eRoamCmdStatus roamStatus, eCsrRoamResult roamResult );
 
@@ -118,6 +129,20 @@ int hdd_SetGENIEToCsr( hdd_adapter_t *pAdapter, eCsrAuthType *RSNAuthType );
 
 int hdd_set_csr_auth_type( hdd_adapter_t *pAdapter, eCsrAuthType RSNAuthType );
 VOS_STATUS hdd_roamRegisterTDLSSTA( hdd_adapter_t *pAdapter,
-                                    tANI_U8 *peerMac, tANI_U16 staId, tANI_U8 ucastSig);
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,18,0))
+                                    const tANI_U8 *peerMac,
+#else
+                                    tANI_U8 *peerMac,
+#endif
+                                    tANI_U16 staId, tANI_U8 ucastSig);
 void hdd_PerformRoamSetKeyComplete(hdd_adapter_t *pAdapter);
+VOS_STATUS hdd_roamDeregisterTDLSSTA(hdd_adapter_t *pAdapter, tANI_U8 staId);
+
+#if defined(FEATURE_WLAN_ESE) && defined(FEATURE_WLAN_ESE_UPLOAD)
+void hdd_indicateEseBcnReportNoResults(const hdd_adapter_t *pAdapter,
+                                       const tANI_U16 measurementToken,
+                                       const tANI_BOOLEAN flag,
+                                       const tANI_U8 numBss);
+#endif /* FEATURE_WLAN_ESE && FEATURE_WLAN_ESE_UPLOAD */
+
 #endif

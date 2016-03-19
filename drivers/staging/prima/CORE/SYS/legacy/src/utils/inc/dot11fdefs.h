@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 #ifndef DOT11FDEFS_H_82A7B72E_C36C_465D_82A7_139EA5322582
 #define DOT11FDEFS_H_82A7B72E_C36C_465D_82A7_139EA5322582
 /**
@@ -28,7 +34,7 @@
  *
  *
  *
- * Copyright (C) 2006 Airgo Networks, Incorporated
+
  *
  * 'framesc' generates code written in terms of a number of macros
  * intended for customization.
@@ -40,11 +46,11 @@
 
 // This controls how the "dot11f" code copies memory
 #define DOT11F_MEMCPY(ctx, dst, src, len) \
-    palCopyMemory( ( ctx )->hHdd, ( tANI_U8* )( dst ), ( tANI_U8* )( src ), ( len ) )
+    vos_mem_copy( ( tANI_U8* )( dst ), ( tANI_U8* )( src ), ( len ) )
 
 // This controls how the "dot11f" code compares memory
 #define DOT11F_MEMCMP(ctx, lhs, rhs, len) \
-    ( ! palEqualMemory( ( ctx )->hHdd, ( tANI_U8* )( lhs ), ( tANI_U8* )( rhs ), ( len ) ) )
+    ( ! vos_mem_compare( ( tANI_U8* )( lhs ), ( tANI_U8* )( rhs ), ( len ) ) )
 
 #   if defined ( DBG ) && ( DBG != 0 )
 

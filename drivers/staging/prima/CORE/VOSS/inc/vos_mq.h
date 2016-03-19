@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 #if !defined( __VOS_MQ_H )
 #define __VOS_MQ_H
 
@@ -29,19 +35,6 @@
   \brief virtual Operating System Services (vOSS) message queue APIs
 
    Message Queue Definitions and API
-<<<<<<< HEAD:CORE/VOSS/inc/vos_mq.h
-  
-   Copyright 2008 (c) Qualcomm, Incorporated.  All Rights Reserved.
-   
-   Qualcomm Confidential and Proprietary.
-  
-=======
-
-   Copyright 2008 (c) Qualcomm Technologies, Inc.  All Rights Reserved.
-
-   Qualcomm Technologies Confidential and Proprietary.
-
->>>>>>> f7413b6... wlan: voss: remove obsolete "INTEGRATED_SOC" featurization:prima/CORE/VOSS/inc/vos_mq.h
   ========================================================================*/
 
 /* $Header$ */
@@ -84,9 +77,15 @@ typedef struct vos_msg_s
      * Messages should use either bodyptr or bodyval; not both !!!.
      */
     void *bodyptr;
-    
-    v_U32_t bodyval;    
-    
+
+    v_U32_t bodyval;
+
+    /*
+     * Some messages provide a callback function.  The function signature
+     * must be agreed upon between the two entities exchanging the message
+     */
+    void *callback;
+
 } vos_msg_t;
 
 
@@ -156,6 +155,43 @@ typedef enum
   
   --------------------------------------------------------------------------*/
 VOS_STATUS vos_mq_post_message( VOS_MQ_ID msgQueueId, vos_msg_t *message );
+
+/**--------------------------------------------------------------------------
+  \brief vos_mq_post_message_high_pri() - posts a high priority message to
+           a message queue
+
+  This API allows messages to be posted to the head of a specific message
+  queue. Messages  can be posted to the following message queues:
+
+  <ul>
+    <li> SME
+    <li> PE
+    <li> HAL
+    <li> TL
+  </ul>
+
+  \param msgQueueId - identifies the message queue upon which the message
+         will be posted.
+
+  \param message - a pointer to a message buffer.  Memory for this message
+         buffer is allocated by the caller and free'd by the vOSS after the
+         message is posted to the message queue.  If the consumer of the
+         message needs anything in this message, it needs to copy the contents
+         before returning from the message queue handler.
+
+  \return VOS_STATUS_SUCCESS - the message has been successfully posted
+          to the message queue.
+
+          VOS_STATUS_E_INVAL - The value specified by msgQueueId does not
+          refer to a valid Message Queue Id.
+
+          VOS_STATUS_E_FAULT  - message is an invalid pointer.
+
+          VOS_STATUS_E_FAILURE - the message queue handler has reported
+          an unknown failure.
+  --------------------------------------------------------------------------*/
+
+VOS_STATUS vos_mq_post_message_high_pri(VOS_MQ_ID msgQueueId, vos_msg_t *message);
 
 
 /**---------------------------------------------------------------------------

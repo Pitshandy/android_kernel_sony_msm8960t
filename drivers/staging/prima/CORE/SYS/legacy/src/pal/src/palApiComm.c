@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,12 +19,20 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 #include <palApi.h>
 #include <sirTypes.h>   // needed for tSirRetStatus
 #include <vos_api.h>
 
 #include <sirParams.h>  // needed for tSirMbMsg
 #include "wlan_qct_wda.h"
+
+#ifndef FEATURE_WLAN_PAL_MEM_DISABLE
 
 #ifdef MEMORY_DEBUG
 eHalStatus palAllocateMemory_debug( tHddHandle hHdd, void **ppMemory, tANI_U32 numBytes, char* fileName, tANI_U32 lineNum )
@@ -85,7 +93,7 @@ tANI_BOOLEAN palEqualMemory( tHddHandle hHdd, void *pMemory1, void *pMemory2, tA
 {
    return( vos_mem_compare( pMemory1, pMemory2, numBytes ) );
 }   
-
+#endif
 
 eHalStatus palPktAlloc(tHddHandle hHdd, eFrameType frmType, tANI_U16 size, void **data, void **ppPacket)
 {
@@ -196,7 +204,9 @@ eHalStatus palSpinLockAlloc( tHddHandle hHdd, tPalSpinLockHandle *pHandle )
       pLock = vos_mem_malloc( sizeof( vos_lock_t ) );
    
       if ( NULL == pLock ) break;
-      
+
+      vos_mem_set(pLock, sizeof( vos_lock_t ), 0);
+
       vosStatus = vos_lock_init( pLock );
       if ( !VOS_IS_STATUS_SUCCESS( vosStatus ) )
       {
@@ -304,7 +314,7 @@ eHalStatus palSendMBMessage(tHddHandle hHdd, void *pBuf)
       }
    }
 
-   palFreeMemory( hHdd, pBuf );
+   vos_mem_free( pBuf );
 
    return( halStatus );
 }

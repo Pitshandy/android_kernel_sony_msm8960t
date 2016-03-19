@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 //==================================================================
 //
 //  File:         utilsApi.cc
@@ -27,7 +33,7 @@
 //
 //  Author:       Neelay Das
 //
-//  Copyright 2003, Woodside Networks, Inc. All rights reserved.
+//
 //
 //  Change gHistory:
 //  12/15/2003 - NDA - Initial version.

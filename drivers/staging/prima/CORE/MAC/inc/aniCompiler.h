@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -20,11 +20,16 @@
  */
 
 /*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
+/*
  * Compiler abstraction layer
  *
  *
  *
- * Copyright (C) 2005-2006 Airgo Networks, Inc
  * This file tries to abstract the differences among compilers.
  * Supported compilers are :
  *

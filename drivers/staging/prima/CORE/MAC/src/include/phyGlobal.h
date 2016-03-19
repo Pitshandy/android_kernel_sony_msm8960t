@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,12 +19,14 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 /**
  *
- * Airgo Networks, Inc proprietary.
- * All Rights Reserved, Copyright 2005
- * This program is the confidential and proprietary product of Airgo Networks Inc.
- * Any Unauthorized use, reproduction or transfer of this program is strictly prohibited.
  * 
  * phyGlobal.h: Holds all globals for the phy, rf, and asic layers in hal
  * Author:  Mark Nelson

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2013-2015 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 #if !defined( __WLAN_HDD_DP_UTILS_H )
 #define __WLAN_HDD_DP_UTILS_H
 
@@ -27,16 +33,6 @@
 
   \brief      Utility functions for data path module
 
-  Description...
-               Copyright 2008 (c) Qualcomm, Incorporated.
-               All Rights Reserved.
-<<<<<<< HEAD:CORE/HDD/inc/wlan_hdd_dp_utils.h
-               Qualcomm Confidential and Proprietary.
-  
-=======
-               Qualcomm Technologies Confidential and Proprietary.
-
->>>>>>> 009551c... wlan: hdd: remove obsolete "WLAN_SOFTAP_FEATURE" featurization:prima/CORE/HDD/inc/wlan_hdd_dp_utils.h
   ==============================================================================**/
 /* $HEADER$ */
 
@@ -67,6 +63,7 @@ typedef struct hdd_list_s
    hdd_list_node_t anchor;
    v_SIZE_t count;
    v_SIZE_t max_size;
+   int ratelimit_count;
    spinlock_t lock; 
 } hdd_list_t;
 

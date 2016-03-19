@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 #ifndef WLAN_QCT_DAL_STA_H
 #define WLAN_QCT_DAL_STA_H
 
@@ -34,8 +40,6 @@ DESCRIPTION
   be used by the DAL Control Path Core . 
   
       
-  Copyright (c) 2010 QUALCOMM Incorporated. All Rights Reserved.
-  Qualcomm Confidential and Proprietary
 ===========================================================================*/
 
 
@@ -386,6 +390,25 @@ WDI_STATableGetStaAddr
     WDI_ControlBlockType*  pWDICtx,  
     wpt_uint8              ucSTAIdx, 
     wpt_uint8**            pStaAddr
+);
+
+/**
+ @brief WDI_STATableGetStaMacAddr - get station MAC address
+
+ @param  pWDICtx:  WDI Context pointer
+         ucSTAIdx:  station index
+         pStaAddr: output station MAC address
+
+ @see
+ @return Result of the function call
+*/
+
+WDI_Status
+WDI_STATableGetStaMacAddr
+(
+    WDI_ControlBlockType*  pWDICtx,
+    wpt_uint8              ucSTAIdx,
+    wpt_macAddr*           staMacAddr
 );
 
 /**

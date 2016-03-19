@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2015 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -20,8 +20,13 @@
  */
 
 /*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
+/*
  *
- * Airgo Networks, Inc proprietary. All rights reserved.
  * This file sirMacPropExts.h contains the MAC protocol
  * extensions to support ANI feature set.
  * Author:        Chandra Modumudi
@@ -152,6 +157,11 @@
 
 #define IS_DOT11_MODE_11B(dot11Mode)  \
             ((dot11Mode == WNI_CFG_DOT11_MODE_11B) ? TRUE : FALSE)
+
+#define IS_BSS_VHT_CAPABLE(vhtCaps) \
+            ((vhtCaps).present && \
+             ((vhtCaps).rxMCSMap != 0xFFFF) && \
+             ((vhtCaps).txMCSMap != 0xFFFF))
 
 /// ANI proprietary Status Codes enum
 /// (present in Management response frames)

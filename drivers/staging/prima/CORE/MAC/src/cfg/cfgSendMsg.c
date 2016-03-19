@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -20,7 +20,12 @@
  */
 
 /*
- * Airgo Networks, Inc proprietary. All rights reserved.
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
+/*
  * This file contains the source code for composing and sending messages
  * to host.
  *
@@ -89,7 +94,8 @@ cfgSendHostMsg(tpAniSirGlobal pMac, tANI_U16 msgType, tANI_U32 msgLen, tANI_U32 
     }
 
     // Allocate message buffer
-    if( eHAL_STATUS_SUCCESS != palAllocateMemory( pMac->hHdd, (void **)&pMsg, msgLen))
+    pMsg = vos_mem_malloc(msgLen);
+    if ( NULL == pMsg )
     {
         PELOGE(cfgLog(pMac, LOGE,
                       FL("Memory allocation failure!"));)
@@ -134,7 +140,7 @@ cfgSendHostMsg(tpAniSirGlobal pMac, tANI_U16 msgType, tANI_U32 msgLen, tANI_U32 
         default:
            PELOGE(cfgLog(pMac, LOGE,
                          FL("Unknown msg %d!"), (int) msgType);)
-            palFreeMemory( pMac->hHdd, pMsg);
+            vos_mem_free( pMsg);
             return;
     }
 

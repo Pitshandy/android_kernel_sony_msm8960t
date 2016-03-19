@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -20,8 +20,13 @@
  */
 
 /*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
+/*
  *
- * Airgo Networks, Inc proprietary. All rights reserved.
  * Author:      Dinesh Upadhyay
  * Date:        10/24/06
  * History:-
@@ -92,7 +97,12 @@ limUpdateAdmitPolicy(
 tSirRetStatus limAdmitControlInit(tpAniSirGlobal pMac);
 
 tSirRetStatus limSendHalMsgAddTs(tpAniSirGlobal pMac, tANI_U16 staIdx, tANI_U8 tspecIdx, tSirMacTspecIE tspecIE, tANI_U8 sessionId);
-tSirRetStatus limSendHalMsgDelTs(tpAniSirGlobal pMac,  tANI_U16 staIdx,  tANI_U8 tspecIdx,  tSirDeltsReqInfo delts, tANI_U8 sessionId);
+tSirRetStatus limSendHalMsgDelTs(tpAniSirGlobal pMac,
+                                 tANI_U16 staIdx,
+                                 tANI_U8 tspecIdx,
+                                 tSirDeltsReqInfo delts,
+                                 tANI_U8 sessionId,
+                                 tANI_U8 *bssId);
 void limProcessHalAddTsRsp(tpAniSirGlobal pMac, tpSirMsgQ limMsg);
 
 #endif

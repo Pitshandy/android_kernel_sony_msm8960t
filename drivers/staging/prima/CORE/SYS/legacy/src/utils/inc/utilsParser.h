@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -20,7 +20,12 @@
  */
 
 /*
- * Airgo Networks, Inc proprietary. All rights reserved.
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
+/*
  * This file utilsParser.h contains the utility function protos
  * used internally by the parser
  * Author:        Chandra Modumudi
@@ -40,6 +45,7 @@
 
 void          ConvertSSID           (tpAniSirGlobal, tSirMacSSid*,               tDot11fIESSID*);
 void          ConvertSuppRates      (tpAniSirGlobal, tSirMacRateSet*,            tDot11fIESuppRates*);
+void          ConvertFHParams       (tpAniSirGlobal, tSirMacFHParamSet*,         tDot11fIEFHParamSet*);
 void          ConvertExtSuppRates   (tpAniSirGlobal, tSirMacRateSet*,            tDot11fIEExtSuppRates*);
 void          ConvertQOSCaps        (tpAniSirGlobal, tSirMacQosCapabilityIE*,    tDot11fIEQOSCapsAp*);
 void          ConvertQOSCapsStation (tpAniSirGlobal, tSirMacQosCapabilityStaIE*, tDot11fIEQOSCapsStation*);
@@ -67,6 +73,7 @@ tSirRetStatus ConvertP2POpaque      (tpAniSirGlobal, tSirAddie*,                
 #ifdef WLAN_FEATURE_WFD
 tSirRetStatus ConvertWFDOpaque      (tpAniSirGlobal, tSirAddie*,                 tDot11fIEWFDIEOpaque*);
 #endif
+void          ConvertQosMapsetFrame(tpAniSirGlobal, tSirQosMapSet*,     tDot11fIEQosMapSet*);
 
 
 #endif

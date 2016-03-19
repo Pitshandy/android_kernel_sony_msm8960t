@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 #ifndef __WLAN_HDD_KEEP_ALIVE_H__
 #define __WLAN_HDD_KEEP_ALIVE_H__
 
@@ -28,8 +34,6 @@
 
   \brief Android WLAN HDD Keep-Alive API
 
-  Copyright 2011 (c) QUALCOMM Incorporated. All Rights Reserved.
-  QUALCOMM Proprietary and Confidential.
 
   ==========================================================================*/
 

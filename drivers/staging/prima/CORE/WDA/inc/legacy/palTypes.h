@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 #if !defined( PALTYPES_H__ )
 #define PALTYPES_H__
 
@@ -32,9 +38,7 @@
     These are common typedefs that can be used across Platforms (OS/compiler
     and bus types).  All common code should adhere to these common types.
   
-    $Id$ 
-  
-    Copyright (C) 2006 Airgo Networks, Incorporated
+    $Id$
   
     ... description...
   

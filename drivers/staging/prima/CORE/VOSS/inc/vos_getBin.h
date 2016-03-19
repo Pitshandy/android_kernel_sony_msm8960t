@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2014 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 #if !defined( __VOS_GETBIN_H )
 #define __VOS_GETBIN_H
 
@@ -32,19 +38,6 @@
 
    These APIs allow components to retrieve binary contents (firmware, 
    configuration data, etc.) from a storage medium on the platform.
-<<<<<<< HEAD:CORE/VOSS/inc/vos_getBin.h
-  
-   Copyright 2008 (c) Qualcomm, Incorporated.  All Rights Reserved.
-   
-   Qualcomm Confidential and Proprietary.
-  
-=======
-
-   Copyright 2008 (c) Qualcomm Technologies, Inc.  All Rights Reserved.
-
-   Qualcomm Technologies Confidential and Proprietary.
-
->>>>>>> 1cc7c78... wlan: voss: remove obsolete "WLAN_SOFTAP_FEATURE" featurization:prima/CORE/VOSS/inc/vos_getBin.h
   ========================================================================*/
 
 /* $Header$ */
@@ -75,7 +68,10 @@ typedef enum
   VOS_BINARY_ID_COUNTRY_INFO,
 
   /// Binary ID for Handoff Configuration data
-  VOS_BINARY_ID_HO_CONFIG
+  VOS_BINARY_ID_HO_CONFIG,
+
+  /// Binary ID for Dictionary Configuration data
+  VOS_BINARY_ID_DICT_CONFIG
 
   
 } VOS_BINARY_ID;
@@ -141,6 +137,7 @@ VOS_STATUS vos_get_binary_blob( VOS_BINARY_ID binaryId,
 -----------------------------------------------------------------------------*/
 tVOS_CON_MODE vos_get_conparam( void );
 tVOS_CONCURRENCY_MODE vos_get_concurrency_mode( void );
-v_BOOL_t vos_concurrent_sessions_running(void);
+v_BOOL_t vos_concurrent_open_sessions_running(void);
+v_BOOL_t vos_max_concurrent_connections_reached(void);
 
 #endif // !defined __VOS_GETBIN_H

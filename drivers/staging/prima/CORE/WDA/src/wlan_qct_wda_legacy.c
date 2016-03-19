@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 /*===========================================================================
 
                        wlan_qct_wda_legacy.c
@@ -36,9 +42,6 @@
   Are listed for each API below.
 
 
-  Copyright (c) 2008 QUALCOMM Incorporated.
-  All Rights Reserved.
-  Qualcomm Confidential and Proprietary
 ===========================================================================*/
 
 /* Standard include files */
@@ -150,7 +153,7 @@ tSirRetStatus uMacPostCtrlMsg(void* pSirGlobal, tSirMbMsg* pMb)
    msg.type = pMb->type;
    msg.bodyval = 0;
 
-   WDALOG3(wdaLog(pMac, LOG3, FL("msgType %d, msgLen %d\n" ),
+   WDALOG3(wdaLog(pMac, LOG3, FL("msgType %d, msgLen %d" ),
         pMb->type, pMb->msgLen));
 
    // copy the message from host buffer to firmware buffer
@@ -159,18 +162,20 @@ tSirRetStatus uMacPostCtrlMsg(void* pSirGlobal, tSirMbMsg* pMb)
    // host buffer
 
    // second parameter, 'wait option', to palAllocateMemory is ignored on Windows
-   if( eHAL_STATUS_SUCCESS != palAllocateMemory( pMac->hHdd, (void **)&pMbLocal, pMb->msgLen))
+   pMbLocal = vos_mem_malloc(pMb->msgLen);
+   if ( NULL == pMbLocal )
    {
-      WDALOGE( wdaLog(pMac, LOGE, FL("Buffer Allocation failed!\n")));
+      WDALOGE( wdaLog(pMac, LOGE, FL("Buffer Allocation failed!")));
       return eSIR_FAILURE;
    }
 
-   palCopyMemory(pMac, (void *)pMbLocal, (void *)pMb, pMb->msgLen);
+   vos_mem_copy((void *)pMbLocal, (void *)pMb, pMb->msgLen);
    msg.bodyptr = pMbLocal;
 
    switch (msg.type & HAL_MMH_MB_MSG_TYPE_MASK)
    {
    case WDA_MSG_TYPES_BEGIN:    // Posts a message to the HAL MsgQ
+   case WDA_EXT_MSG_TYPES_BEGIN:
       wdaPostCtrlMsg(pMac, &msg);
       break;
 
@@ -195,16 +200,11 @@ tSirRetStatus uMacPostCtrlMsg(void* pSirGlobal, tSirMbMsg* pMb)
 
    default:
       WDALOGW( wdaLog(pMac, LOGW, FL("Unknown message type = "
-             "0x%X\n"),
+             "0x%X"),
              msg.type));
 
       // Release the memory.
-      if (palFreeMemory( pMac->hHdd, (void*)(msg.bodyptr))
-            != eHAL_STATUS_SUCCESS)
-      {
-         WDALOGE( wdaLog(pMac, LOGE, FL("Buffer Allocation failed!\n")));
-         return eSIR_FAILURE;
-      }
+      vos_mem_free(msg.bodyptr);
       break;
    }
 
@@ -231,8 +231,6 @@ tBssSystemRole wdaGetGlobalSystemRole(tpAniSirGlobal pMac)
       VOS_ASSERT(0);
       return eSYSTEM_UNKNOWN_ROLE;
    }
-   WDALOG1( wdaLog(pMac, LOG1, FL(" returning  %d role\n"),
-             wdaContext->wdaGlobalSystemRole));
    return  wdaContext->wdaGlobalSystemRole;
 }
 

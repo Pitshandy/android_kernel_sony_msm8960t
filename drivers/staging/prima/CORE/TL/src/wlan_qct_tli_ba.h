@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 #ifndef WLAN_QCT_TLI_BA_H
 #define WLAN_QCT_TLI_BA_H
 
@@ -33,8 +39,6 @@ DESCRIPTION
   layer module for BA session support, AMSDU de-aggregation and 
   MSDU reordering.
         
-  Copyright (c) 2008 QUALCOMM Incorporated. All Rights Reserved.
-  Qualcomm Confidential and Proprietary
 ===========================================================================*/
 
 

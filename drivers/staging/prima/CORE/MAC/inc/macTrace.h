@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 /**=========================================================================
 
   \file  macTrace.h
@@ -27,9 +33,6 @@
 
   \author Sunit Bhatia
 
-   Copyright 2008 (c) Qualcomm, Incorporated.  All Rights Reserved.
-
-   Qualcomm Confidential and Proprietary.
 
   ========================================================================*/
 
@@ -42,9 +45,6 @@
 
 
 #ifdef TRACE_RECORD
-
-#define CASE_RETURN_STRING( str )           \
-    case ( ( str ) ): return( (tANI_U8*)(#str) ); break \
 
 #define MAC_TRACE_GET_MODULE_ID(data) ((data >> 8) & 0xff)
 #define MAC_TRACE_GET_MSG_ID(data)       (data & 0xffff)
@@ -65,7 +65,18 @@ tANI_U8* macTraceGetInfoLogString( tANI_U16 infoLog );
 eHalStatus pe_AcquireGlobalLock( tAniSirLim *psPe);
 eHalStatus pe_ReleaseGlobalLock( tAniSirLim *psPe);
 
+tANI_U8* macTraceGetHDDWlanConnState(tANI_U16 connState);
 
+#ifdef WLAN_FEATURE_P2P_DEBUG
+tANI_U8* macTraceGetP2PConnState(tANI_U16 connState);
+#endif
+
+tANI_U8* macTraceGetNeighbourRoamState(tANI_U16 neighbourRoamState);
+tANI_U8* macTraceGetcsrRoamState(tANI_U16 csrRoamState);
+tANI_U8* macTraceGetcsrRoamSubState(tANI_U16 csrRoamSubState);
+tANI_U8* macTraceGetLimSmeState(tANI_U16 limState);
+tANI_U8* macTraceGetLimMlmState(tANI_U16 mlmState);
+tANI_U8* macTraceGetTLState(tANI_U16 tlState);
 
 #endif
 

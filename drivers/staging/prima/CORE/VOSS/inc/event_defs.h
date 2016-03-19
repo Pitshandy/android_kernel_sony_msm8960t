@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2015 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -17,6 +17,12 @@
  * PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
  * TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  * PERFORMANCE OF THIS SOFTWARE.
+ */
+
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
  */
 
 #ifndef EVENT_DEFS_H
@@ -1895,6 +1901,8 @@ typedef enum
   EVENT_FDPCH_CONFIG_ACTION = 0x766,
   EVENT_SNS_DRV_MOTION_DETECT_SIG = 0x767,
   EVENT_SNS_DRV_OPMODE_CHANGE = 0x768,
+  EVENT_WLAN_EAPOL = 0xA8D,/* 18 bytes payload */
+  EVENT_WLAN_WAKE_LOCK = 0xAA2, /* 96 bytes payload */
 
   EVENT_NEXT_UNUSED_EVENT,
   EVENT_RSVD_START = 0x0800,

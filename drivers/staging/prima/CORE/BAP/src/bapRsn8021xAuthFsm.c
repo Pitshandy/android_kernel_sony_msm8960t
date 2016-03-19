@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -20,7 +20,12 @@
  */
 
 /*
- * Woodside Networks, Inc proprietary. All rights reserved.
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
+/*
  * $File: //depot/software/projects/feature_branches/gen5_phase1/os/linux/classic/ap/apps/ssm/auth8021x/ani8021xAuthRsnFsm.c $
  *
  * Contains definitions for the RSN EAPOL-Key FSM on the
@@ -857,7 +862,7 @@ gotoStatePtkInitNegoTx(tAuthRsnFsm *fsm)
                     break;
                 }
                 groupKeyLen += ANI_SSM_AES_KEY_WRAP_BLOCK_SIZE;
-                memcpy( groupKeyBytes, wrappedKey, groupKeyLen);
+                vos_mem_copy( groupKeyBytes, wrappedKey, groupKeyLen);
                 // Free the array used to hold the wrapped key
                 if (wrappedKey) vos_mem_free( wrappedKey);
                 // IMMEDIATELY adjust the packet size to reflect the IV 

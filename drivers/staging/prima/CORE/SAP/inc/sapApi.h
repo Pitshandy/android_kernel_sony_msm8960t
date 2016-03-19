@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 #ifndef WLAN_QCT_WLANSAP_H
 #define WLAN_QCT_WLANSAP_H
 
@@ -33,8 +39,6 @@ DESCRIPTION
   module.
   
       
-  Copyright (c) 2010 QUALCOMM Incorporated. All Rights Reserved.
-  Qualcomm Confidential and Proprietary
 ===========================================================================*/
 
 
@@ -183,7 +187,6 @@ typedef enum {
     eSAP_ASSOC_STA_CALLBACK_EVENT,  /*Event sent when user called WLANSAP_GetAssocStations */
     eSAP_GET_WPSPBC_SESSION_EVENT,  /* Event send when user call  WLANSAP_getWpsSessionOverlap */  
     eSAP_WPS_PBC_PROBE_REQ_EVENT, /* Event send on WPS PBC probe request is received */
-    eSAP_INDICATE_MGMT_FRAME,
     eSAP_REMAIN_CHAN_READY,
     eSAP_SEND_ACTION_CNF,
     eSAP_DISCONNECT_ALL_P2P_CLIENT,
@@ -227,6 +230,15 @@ typedef enum  {
     eSAP_WPSPBC_NO_WPSPBC_PROBE_REQ_IN120S,     /* no WPS probe request in 120 second */
     eSAP_WPSPBC_ONE_WPSPBC_PROBE_REQ_IN120S,    /* One WPS probe request in 120 second  */
 }eWPSPBCOverlap;
+
+typedef enum {
+        eSAP_RF_SUBBAND_2_4_GHZ      = 0,
+        eSAP_RF_SUBBAND_5_LOW_GHZ    = 1,    //Low & Mid U-NII
+        eSAP_RF_SUBBAND_5_MID_GHZ    = 2,    //ETSI
+        eSAP_RF_SUBBAND_5_HIGH_GHZ   = 3,    //High U-NII
+        eSAP_RF_SUBBAND_4_9_GHZ      = 4,
+        eSAP_RF_SUBBAND_5_ALL_GHZ    = 5,    //All 5 GHZ,
+}eSapOperatingBand;
 
 /*----------------------------------------------------------------------------
  *  Typedefs
@@ -311,6 +323,11 @@ typedef struct sap_AssocMacAddr_s {
     v_MACADDR_t staMac;     /*MAC address of Station that is associated*/
     v_U8_t      assocId;        /*Association ID for the station that is associated*/
     v_U8_t      staId;            /*Station Id that is allocated to the station*/
+    v_U8_t      ShortGI40Mhz;
+    v_U8_t      ShortGI20Mhz;
+    v_U8_t      Support40Mhz;
+    v_U32_t     requestedMCRate;
+    tSirSupportedRates supportedRates;
 } tSap_AssocMacAddr, *tpSap_AssocMacAddr;
 
 /*struct corresponding to SAP_ASSOC_STA_CALLBACK_EVENT */
@@ -376,7 +393,6 @@ typedef struct sap_Event_s {
         tSap_AssocStaListEvent                    sapAssocStaListEvent; /*SAP_ASSOC_STA_CALLBACK_EVENT */
         tSap_GetWPSPBCSessionEvent                sapGetWPSPBCSessionEvent; /*SAP_GET_WPSPBC_SESSION_EVENT */
         tSap_WPSPBCProbeReqEvent                  sapPBCProbeReqEvent; /*eSAP_WPS_PBC_PROBE_REQ_EVENT */
-        tSap_ManagementFrameInfo                  sapManagementFrameInfo; /*eSAP_INDICATE_MGMT_FRAME*/
         tSap_SendActionCnf                        sapActionCnf;  /* eSAP_SEND_ACTION_CNF */ 
         tSap_UnknownSTAJoinEvent                  sapUnknownSTAJoin; /* eSAP_UNKNOWN_STA_JOIN */
         tSap_MaxAssocExceededEvent                sapMaxAssocExceeded; /* eSAP_MAX_ASSOC_EXCEEDED */
@@ -430,6 +446,13 @@ typedef struct sap_Config {
     v_U32_t         ap_table_expiration_time;
     v_U32_t         ht_op_mode_fixed;
     tVOS_CON_MODE   persona; /*Tells us which persona it is GO or AP for now*/
+
+#ifdef WLAN_FEATURE_11W
+    v_BOOL_t        mfpRequired;
+    v_BOOL_t        mfpCapable;
+#endif
+    eCsrBand        scanBandPreference;
+    v_U16_t         acsBandSwitchThreshold;
 
 } tsap_Config_t;
 
@@ -555,6 +578,14 @@ typedef struct sap_SoftapStats_s {
 #endif
 } tSap_SoftapStats, *tpSap_SoftapStats;
 
+#ifdef FEATURE_WLAN_CH_AVOID
+/* Store channel safty information */
+typedef struct
+{
+   v_U16_t   channelNumber;
+   v_BOOL_t  isSafe;
+} safeChannelType;
+#endif /* FEATURE_WLAN_CH_AVOID */
 
 int sapSetPreferredChannel(tANI_U8* ptr);
 void sapCleanupChannelList(void);
@@ -970,7 +1001,12 @@ WLANSAP_StopBss
 VOS_STATUS 
 WLANSAP_DisassocSta
 (
-    v_PVOID_t  pvosGCtx, v_U8_t *pPeerStaMac
+    v_PVOID_t  pvosGCtx,
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,18,0))
+    const v_U8_t *pPeerStaMac
+#else
+    v_U8_t *pPeerStaMac
+#endif
 );
 
 /*==========================================================================
@@ -986,7 +1022,8 @@ WLANSAP_DisassocSta
 
     IN
     pvosGCtx            : Pointer to vos global context structure
-    pPeerStaMac         : Mac address of the station to deauthenticate
+    pDelStaParams       : Pointer to parameters of the station to
+                          deauthenticate
    
   RETURN VALUE
     The VOS_STATUS code associated with performing the operation  
@@ -998,7 +1035,8 @@ WLANSAP_DisassocSta
 VOS_STATUS 
 WLANSAP_DeauthSta
 (
-    v_PVOID_t  pvosGCtx, v_U8_t *pPeerStaMac
+    v_PVOID_t  pvosGCtx,
+    struct tagCsrDelStaParams *pDelStaParams
 );
 
 /*==========================================================================
@@ -1026,7 +1064,7 @@ WLANSAP_DeauthSta
 ============================================================================*/
 VOS_STATUS
 WLANSAP_SetChannelRange(tHalHandle hHal,v_U8_t startChannel, v_U8_t endChannel, 
-                              v_U8_t operatingBand);
+                              eSapOperatingBand operatingBand);
 
 /*==========================================================================
   FUNCTION    WLANSAP_SetKeySta
@@ -1529,6 +1567,31 @@ VOS_STATUS WLANSAP_RegisterMgmtFrame( v_PVOID_t pvosGCtx, tANI_U16 frameType,
 VOS_STATUS WLANSAP_DeRegisterMgmtFrame( v_PVOID_t pvosGCtx, tANI_U16 frameType, 
                                       tANI_U8* matchData, tANI_U16 matchLen );
 
+
+/*==========================================================================
+  FUNCTION    WLANSAP_PopulateDelStaParams
+
+  DESCRIPTION
+  This API is used to populate del station parameters
+  DEPENDENCIES
+  NA.
+
+  PARAMETERS
+  IN
+  mac:           pointer to peer mac address.
+  reason_code:   Reason code for the disassoc/deauth.
+  subtype:       subtype points to either disassoc/deauth frame.
+  pDelStaParams: address where parameters to be populated.
+
+  RETURN VALUE NONE
+
+  SIDE EFFECTS
+============================================================================*/
+
+void WLANSAP_PopulateDelStaParams(const v_U8_t *mac,
+                                 v_U16_t reason_code,
+                                 v_U8_t subtype,
+                                 struct tagCsrDelStaParams *pDelStaParams);
 
 #ifdef __cplusplus
  }

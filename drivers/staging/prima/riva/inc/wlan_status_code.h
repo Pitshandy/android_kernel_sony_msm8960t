@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 /*===========================================================================
  *
  *  @file:     wlan_status_code.h
@@ -27,8 +33,6 @@
  *             All status codes have been consolidated into one enum
  *
  *  @author:   Kumar Anand
- *             Copyright (C) 2010, Qualcomm, Inc.
- *             All rights reserved.
  *
  *=========================================================================*/
 
@@ -154,6 +158,15 @@ typedef enum
    /* BSS disconnect status : disassoc */
    eHAL_STATUS_BSS_DISCONN_DISASSOC,
    
+   /* Data abort happened in PHY sw */
+   eHAL_STATUS_PHY_DATA_ABORT,
+
+   /* Invalid NV field  */
+   eHAL_STATUS_PHY_INVALID_NV_FIELD,
+
+   /* WLAN boot test failed */
+   eHAL_STATUS_WLAN_BOOT_TEST_FAILURE,
+
    /* Max status value */
    eHAL_STATUS_MAX_VALUE = WLAN_STATUS_MAX_ENUM_SIZE
 

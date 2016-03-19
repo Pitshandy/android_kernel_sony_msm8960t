@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2011-2012,2014 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -20,7 +20,12 @@
  */
 
 /*
- * */
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
+
 
 #if !defined( __RRMGLOBAL_H )
 #define __RRMGLOBAL_H
@@ -31,14 +36,8 @@
 
   \brief Definitions for SME APIs
 
-   Copyright 2008 (c) Qualcomm, Incorporated.  All Rights Reserved.
-
-   Qualcomm Confidential and Proprietary.
 
   ========================================================================*/
-
-#define SIR_BCN_REPORT_MAX_BSS_DESC_PER_ACTION_FRAME    3
-#define SIR_BCN_REPORT_MAX_BSS_PER_CHANNEL             15
 
 typedef enum eRrmRetStatus
 {
@@ -47,6 +46,13 @@ typedef enum eRrmRetStatus
     eRRM_REFUSED,
     eRRM_FAILURE
 } tRrmRetStatus;
+
+typedef enum eRrmMsgReqSource
+{
+    eRRM_MSG_SOURCE_LEGACY_ESE  = 1, /* legacy ese */
+    eRRM_MSG_SOURCE_11K         = 2, /* 11k */
+    eRRM_MSG_SOURCE_ESE_UPLOAD  = 3  /* ese upload approach */
+} tRrmMsgReqSource;
 
 typedef struct sSirChannelInfo
 {
@@ -59,14 +65,15 @@ typedef struct sSirBeaconReportReqInd
    tANI_U16     messageType; // eWNI_SME_BEACON_REPORT_REQ_IND
    tANI_U16     length;
    tSirMacAddr  bssId;
-   tANI_U16     measurementDuration;   //ms
+   tANI_U16     measurementDuration[SIR_ESE_MAX_MEAS_IE_REQS];   //ms
    tANI_U16     randomizationInterval; //ms
    tSirChannelInfo channelInfo;
    tSirMacAddr      macaddrBssid;   //0: wildcard
-   tANI_U8      fMeasurementtype;  //0:Passive, 1: Active, 2: table mode
+   tANI_U8      fMeasurementtype[SIR_ESE_MAX_MEAS_IE_REQS];  //0:Passive, 1: Active, 2: table mode
    tAniSSID     ssId;              //May be wilcard.
    tANI_U16      uDialogToken;
    tSirChannelList channelList; //From AP channel report.
+   tRrmMsgReqSource msgSource;
 } tSirBeaconReportReqInd, * tpSirBeaconReportReqInd;
 
 
@@ -80,7 +87,7 @@ typedef struct sSirBeaconReportXmitInd
    tANI_U16    duration;
    tANI_U8     regClass;
    tANI_U8     numBssDesc;
-   tpSirBssDescription pBssDescription[SIR_BCN_REPORT_MAX_BSS_DESC_PER_ACTION_FRAME];
+   tpSirBssDescription pBssDescription[SIR_BCN_REPORT_MAX_BSS_DESC];
 } tSirBeaconReportXmitInd, * tpSirBeaconReportXmitInd;
 
 typedef struct sSirNeighborReportReqInd
@@ -115,7 +122,7 @@ typedef struct sSirNeighborBssDescription
                 tANI_U32      fMobilityDomain:1;
                 tANI_U32      reserved:21; 
          } rrmInfo;
-         struct _ccxInfo {
+         struct _eseInfo {
                 tANI_U32      channelBand:8;
                 tANI_U32      minRecvSigPower:8;
                 tANI_U32      apTxPower:8;
@@ -127,7 +134,7 @@ typedef struct sSirNeighborBssDescription
 
                 tANI_U32      beaconInterval:16;
                 tANI_U32      reserved: 16;
-         } ccxInfo;
+         } eseInfo;
    } bssidInfo;
  
    //Optional sub IEs....ignoring for now.
@@ -167,6 +174,7 @@ typedef struct sRRMReq
          tRRMBeaconReportRequestedIes reqIes;
       }Beacon;
    }request;
+   tANI_U8 sendEmptyBcnRpt;
 }tRRMReq, *tpRRMReq;
 
 typedef struct sRRMCaps

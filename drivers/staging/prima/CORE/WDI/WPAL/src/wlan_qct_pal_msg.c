@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 /**=========================================================================
   
   \file  wlan_qct_pal_msg.c
@@ -27,9 +33,6 @@
                
    Definitions for platform with legacy UMAC support.
   
-   Copyright 2010 (c) Qualcomm, Incorporated.  All Rights Reserved.
-   
-   Qualcomm Confidential and Proprietary.
   
   ========================================================================*/
 
@@ -82,7 +85,7 @@ wpt_status wpalPostCtrlMsg(void *pPalContext, wpt_msg *pMsg)
    }
    else
    {
-      WPAL_TRACE(eWLAN_MODULE_PAL, eWLAN_PAL_TRACE_LEVEL_ERROR, "%s fail to post msg %d\n",
+      WPAL_TRACE(eWLAN_MODULE_PAL, eWLAN_PAL_TRACE_LEVEL_ERROR, "%s fail to post msg %d",
                   __func__, pMsg->type);
    }
 
@@ -120,7 +123,7 @@ wpt_status wpalPostTxMsg(void *pPalContext, wpt_msg *pMsg)
    }
    else
    {
-      WPAL_TRACE(eWLAN_MODULE_PAL, eWLAN_PAL_TRACE_LEVEL_ERROR, "%s fail to post msg %d\n",
+      WPAL_TRACE(eWLAN_MODULE_PAL, eWLAN_PAL_TRACE_LEVEL_ERROR, "%s fail to post msg %d",
                   __func__, pMsg->type);
    }
 
@@ -157,7 +160,7 @@ wpt_status wpalPostRxMsg(void *pPalContext, wpt_msg *pMsg)
    }
    else
    {
-      WPAL_TRACE(eWLAN_MODULE_PAL, eWLAN_PAL_TRACE_LEVEL_ERROR, "%s fail to post msg %d\n",
+      WPAL_TRACE(eWLAN_MODULE_PAL, eWLAN_PAL_TRACE_LEVEL_ERROR, "%s fail to post msg %d",
                   __func__, pMsg->type);
    }
 

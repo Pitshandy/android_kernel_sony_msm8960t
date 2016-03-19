@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2014 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 #ifndef WLAN_HDD_MISC_H
 #define WLAN_HDD_MISC_H
 
@@ -28,6 +34,7 @@
 #define WLAN_CFG_FILE              "wlan/prima/WCNSS_cfg.dat"
 #define WLAN_FW_FILE               ""
 #define WLAN_NV_FILE               "wlan/prima/WCNSS_qcom_wlan_nv.bin"
+#define WLAN_DICT_FILE             "wlan/prima/WCNSS_wlan_dictionary.dat"
 #define WLAN_COUNTRY_INFO_FILE     "wlan/prima/WCNSS_wlan_country_info.dat"
 #define WLAN_HO_CFG_FILE           "wlan/prima/WCNSS_wlan_ho_config"
 #else
@@ -35,6 +42,7 @@
 #define WLAN_CFG_FILE              "wlan/volans/WCN1314_cfg.dat"
 #define WLAN_FW_FILE               "wlan/volans/WCN1314_qcom_fw.bin"
 #define WLAN_NV_FILE               "wlan/volans/WCN1314_qcom_wlan_nv.bin"
+#define WLAN_DICT_FILE             ""
 #define WLAN_COUNTRY_INFO_FILE     "wlan/volans/WCN1314_wlan_country_info.dat"
 #define WLAN_HO_CFG_FILE           "wlan/volans/WCN1314_wlan_ho_config"
 #endif // ANI_CHIPSET
@@ -43,6 +51,7 @@
 #define WLAN_CFG_FILE              "wlan/cfg.dat"
 #define WLAN_FW_FILE               "wlan/qcom_fw.bin"
 #define WLAN_NV_FILE               "wlan/qcom_wlan_nv.bin"
+#define WLAN_DICT_FILE             ""
 #define WLAN_COUNTRY_INFO_FILE     "wlan/wlan_country_info.dat"
 #define WLAN_HO_CFG_FILE           "wlan/wlan_ho_config"
 #endif // MSM_PLATFORM

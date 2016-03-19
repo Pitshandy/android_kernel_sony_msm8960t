@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 #if !defined( __WLAN_QCT_OS_TYPE_H )
 #define __WLAN_QCT_OS_TYPE_H
 
@@ -30,32 +36,30 @@
                
    Definitions for platform dependent. This is for Linux/Android
   
-   Copyright 2010 (c) Qualcomm, Incorporated.  All Rights Reserved.
-   
-   Qualcomm Confidential and Proprietary.
   
   ========================================================================*/
 
+#include <linux/types.h>
 
-typedef unsigned long wpt_uint32;
+typedef u32 wpt_uint32;
 
-typedef signed long wpt_int32;
+typedef s32 wpt_int32;
 
-typedef unsigned short wpt_uint16;
+typedef u16 wpt_uint16;
 
-typedef signed short wpt_int16;
+typedef s16 wpt_int16;
 
-typedef unsigned char wpt_uint8;
+typedef u8 wpt_uint8;
 
 typedef wpt_uint8 wpt_byte;
 
-typedef signed char wpt_int8;
+typedef s8 wpt_int8;
 
-typedef wpt_uint8 wpt_boolean; 
+typedef wpt_uint8 wpt_boolean;
 
-typedef unsigned long long wpt_uint64;
+typedef u64 wpt_uint64;
 
-typedef long long wpt_int64;
+typedef s64 wpt_int64;
 
 #define WPT_INLINE __inline__
 #define WPT_STATIC static

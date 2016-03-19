@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,8 +19,13 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
-/** 
-    Copyright (C) 2006 Airgo Networks, Incorporated
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
+/*
 
     This file contains function implementations for the Platform
     Abstration Layer.
@@ -32,6 +37,7 @@
 #include <vos_timer.h>
 #include <vos_memory.h>
 
+#ifndef FEATURE_WLAN_PAL_TIMER_DISABLE
 typedef struct sPalTimer
 {   
     palTimerCallback timerCallback;
@@ -225,7 +231,7 @@ eHalStatus palTimerStop(tHddHandle hHdd, tPalTimerHandle hPalTimer)
    return( status );
 }   
 
-
+#endif
 
 
 

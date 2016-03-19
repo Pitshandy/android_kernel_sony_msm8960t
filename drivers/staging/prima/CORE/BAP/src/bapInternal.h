@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 #ifndef WLAN_QCT_WLANBAP_INTERNAL_H
 #define WLAN_QCT_WLANBAP_INTERNAL_H
 
@@ -33,8 +39,6 @@ DESCRIPTION
   module.
   
       
-  Copyright (c) 2008 QUALCOMM Incorporated. All Rights Reserved.
-  Qualcomm Confidential and Proprietary
 ===========================================================================*/
 
 
@@ -200,7 +204,7 @@ typedef struct sBtampHCI_Supported_Cmds {
 
 typedef struct sBtampHCI_AMP_Info {
 //    v_U8_t       present;
-    v_U8_t       HC_AMP_Status; /* */
+    v_U8_t       HC_AMP_Status;
     v_U32_t      HC_Total_BW; /* combined uplink and downlink */
     v_U32_t      HC_Max_Guaranteed_BW; /* upper bound */
     v_U32_t      HC_Min_Latency; /* AMP HCI latency + DIFS + CWMin */

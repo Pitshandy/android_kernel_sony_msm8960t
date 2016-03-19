@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 #if !defined( __WLAN_QCT_WTI_DS_H )
 #define __WLAN_QCT_WTI_DS_H
 
@@ -33,8 +39,6 @@
  *  This file contains the external API exposed by the 
  *   wlan device abstarction layer module.
  *
- *   Copyright (c) 2008 QUALCOMM Incorporated. All Rights Reserved.
- *   Qualcomm Confidential and Proprietary
  */
 
 
@@ -60,10 +64,11 @@ typedef struct
    wpt_uint8 addr2MACAddress[6];
    wpt_uint8 frmType;
    wpt_uint8 fStaType;
-   wpt_uint8 fProtectedFrame;
+   wpt_uint8 fProtMgmtFrame;
    wpt_uint16 fPktlen;
    wpt_status txCompleteStatus;
    wpt_uint8  staIdx;
+   wpt_uint32  txBdToken;
 } WDI_DS_TxMetaInfoType;
 
 
@@ -82,6 +87,20 @@ typedef enum
   WDI_DS_OPCODE_MAX
 }WDI_DS_BAOpCodeEnumType;
 
+#define WDI_DS_LOG_PKT_TYPE_LEN 4
+typedef enum
+{
+  WDI_DS_PACKET_LOG = 1<<0,
+
+  // Insert new values before this
+
+  // If the value of WDI_DS_MAX LOG is increased please
+  // make sure to change the data type of
+  // WDI_DS_RxMetaInfoType.loggingData from wpt_uint8
+  // to accommodate more values
+  WDI_DS_MAX_LOG    = 1<<31
+}WDI_DS_LoggingDataEnumType;
+
 typedef struct 
 {
    wpt_uint8 staId;
@@ -89,7 +108,7 @@ typedef struct
    wpt_uint8 rxChannel;
    wpt_uint8 type:2;
    wpt_uint8 subtype:4;
-   wpt_uint8 reserved0:2;
+   wpt_uint8 rfBand:2;
 
    wpt_uint16 rtsf:1;  //For beacon only. 1 ~V Riva TSF is bigger(later) than the one received
    wpt_uint16 bsf:1;   //1 Riva sends the last beacon, 0 not.
@@ -150,6 +169,10 @@ typedef struct
    wpt_uint32 offloadScanLearn;
    wpt_uint32 roamCandidateInd;
 #endif
+#ifdef WLAN_FEATURE_EXTSCAN
+   wpt_uint32 extscanBuffer;
+#endif
+   wpt_uint32 loggingData;
 } WDI_DS_RxMetaInfoType;
 
 typedef struct sPktMetaInfo
@@ -160,6 +183,17 @@ typedef struct sPktMetaInfo
       WDI_DS_RxMetaInfoType rxMetaInfo;
    } u;
 } WDI_DS_MetaInfoType;
+
+typedef struct
+{
+   wpt_boolean active;
+   wpt_uint64 logBuffAddress[MAX_NUM_OF_BUFFER];
+   wpt_uint32 logBuffLength[MAX_NUM_OF_BUFFER];
+   /* Log type i.e. Mgmt frame = 0, QXDM = 1, FW Mem dump = 2 */
+   wpt_uint8   logType;
+   /* Indicate if Last segment of log is received*/
+   wpt_boolean done;
+} WDI_DS_LoggingSessionType;
 
 WPT_STATIC WPT_INLINE WDI_DS_RxMetaInfoType* WDI_DS_ExtractRxMetaData (wpt_packet *pFrame)
 {
@@ -180,6 +214,7 @@ WPT_STATIC WPT_INLINE WDI_DS_TxMetaInfoType* WDI_DS_ExtractTxMetaData (wpt_packe
 typedef void (*WDI_DS_TxCompleteCallback)(void *pContext, wpt_packet *pFrame);
 typedef void (*WDI_DS_RxPacketCallback) (void *pContext, wpt_packet *pFrame);
 typedef void (*WDI_DS_TxFlowControlCallback)(void *pContext, wpt_uint8 ac_mask);
+typedef void (*WDI_DS_RxLogCallback)(void);
 
 
 
@@ -202,6 +237,7 @@ WDI_Status WDI_DS_Register( void *pContext,
   WDI_DS_TxCompleteCallback pfnTxCompleteCallback,
   WDI_DS_RxPacketCallback pfnRxPacketCallback, 
   WDI_DS_TxFlowControlCallback pfnTxFlowControlCallback,
+  WDI_DS_RxLogCallback pfnRxLogCallback,
   void *pCallbackContext);
 
 
@@ -347,4 +383,7 @@ void WDI_DS_ActivateTrafficStats(void);
  */
 void WDI_DS_ClearTrafficStats(void);
 
+void *WDI_DS_GetLoggingMbPhyAddr(void *pContext);
+void *WDI_DS_GetLoggingMbAddr(void *pContext);
+void *WDI_DS_GetLoggingSession(void *pContext);
 #endif

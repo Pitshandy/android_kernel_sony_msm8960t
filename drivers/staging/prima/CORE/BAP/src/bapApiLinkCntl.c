@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,6 +19,12 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
+
 /*===========================================================================
 
                       b a p A p i L i n k C n t l . C
@@ -36,9 +42,6 @@
   Are listed for each API below. 
   
   
-  Copyright (c) 2008 QUALCOMM Incorporated.
-  All Rights Reserved.
-  Qualcomm Confidential and Proprietary
 ===========================================================================*/
 
 /*===========================================================================
@@ -1552,7 +1555,7 @@ WLAN_BAPLogicalLinkDisconnect
     /* Derive logical link index from handle */
     log_link_index = ((pBapHCILogLinkDisconnect->log_link_handle) >> 8);
 
-    if( log_link_index > WLANBAP_MAX_LOG_LINKS )
+    if( log_link_index >= WLANBAP_MAX_LOG_LINKS )
     {
        VOS_TRACE( VOS_MODULE_ID_BAP, VOS_TRACE_LEVEL_ERROR, 
                   "Critical error: Invalid input parameter on %s", 

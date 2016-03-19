@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -19,15 +19,16 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+/*
+ * This file was originally distributed by Qualcomm Atheros, Inc.
+ * under proprietary terms before Copyright ownership was assigned
+ * to the Linux Foundation.
+ */
 
 #if!defined( __LIM_SESSION_UTILS_H )
 #define __LIM_SESSION_UTILS_H
 
-/*
-* Copyright (c) 2012-2013 Qualcomm Atheros, Inc.
-* All Rights Reserved.
-* Qualcomm Atheros Confidential and Proprietary.
-*/
+
 
 /**=========================================================================
   
@@ -37,9 +38,6 @@
 
   \author Sunit Bhatia
   
-   Copyright 2008 (c) Qualcomm, Incorporated.  All Rights Reserved.
-   
-   Qualcomm Confidential and Proprietary.
   
   ========================================================================*/
 
@@ -127,6 +125,22 @@ tpPESession peGetValidPowerSaveSession(tpAniSirGlobal pMac);
   --------------------------------------------------------------------------*/
 
 tANI_U8 peIsAnySessionActive(tpAniSirGlobal pMac);
+
+/* --------------------------------------------------------------------------*/
+
+
+/*--------------------------------------------------------------------------
+  \brief pePrintActiveSession() - print all the active pesession present .
+
+  This function print all the active pesession present
+
+  \param pMac                   - pointer to global adapter context
+
+  \sa
+  --------------------------------------------------------------------------*/
+
+void pePrintActiveSession(tpAniSirGlobal pMac);
+
 /* --------------------------------------------------------------------------*/
 
 
