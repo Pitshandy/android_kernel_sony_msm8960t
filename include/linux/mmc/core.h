@@ -8,6 +8,7 @@
 #ifndef LINUX_MMC_CORE_H
 #define LINUX_MMC_CORE_H
 
+#ifdef __KERNEL__
 #include <linux/interrupt.h>
 #include <linux/completion.h>
 
@@ -23,6 +24,7 @@ struct mmc_command {
 #define MMC_CMD23_ARG_TAG_REQ	(1 << 29)
 	u32			resp[4];
 	unsigned int		flags;		/* expected response type */
+#endif /* __KERNEL__ */
 #define MMC_RSP_PRESENT	(1 << 0)
 #define MMC_RSP_136	(1 << 1)		/* 136 bit response */
 #define MMC_RSP_CRC	(1 << 2)		/* expect valid crc */
@@ -55,6 +57,7 @@ struct mmc_command {
 #define MMC_RSP_R6	(MMC_RSP_PRESENT|MMC_RSP_CRC|MMC_RSP_OPCODE)
 #define MMC_RSP_R7	(MMC_RSP_PRESENT|MMC_RSP_CRC|MMC_RSP_OPCODE)
 
+#ifdef __KERNEL__
 #define mmc_resp_type(cmd)	((cmd)->flags & (MMC_RSP_PRESENT|MMC_RSP_136|MMC_RSP_CRC|MMC_RSP_BUSY|MMC_RSP_OPCODE))
 
 /*
@@ -185,6 +188,8 @@ extern int mmc_erase_group_aligned(struct mmc_card *card, unsigned int from,
 extern unsigned int mmc_calc_max_discard(struct mmc_card *card);
 
 extern int mmc_set_blocklen(struct mmc_card *card, unsigned int blocklen);
+extern int mmc_set_blockcount(struct mmc_card *card, unsigned int blockcount,
+			      bool is_rel_write);
 extern int mmc_hw_reset(struct mmc_host *host);
 extern int mmc_hw_reset_check(struct mmc_host *host);
 extern int mmc_can_reset(struct mmc_card *card);
@@ -196,12 +201,13 @@ extern int __mmc_claim_host(struct mmc_host *host, atomic_t *abort);
 extern void mmc_release_host(struct mmc_host *host);
 extern int mmc_try_claim_host(struct mmc_host *host);
 extern void mmc_set_ios(struct mmc_host *host);
-extern int mmc_detect_card_removed(struct mmc_host *host);
-extern int mmc_flush_cache(struct mmc_card *);
-
 extern int mmc_flush_cache(struct mmc_card *);
 
 extern int mmc_detect_card_removed(struct mmc_host *host);
+
+extern void mmc_blk_init_bkops_statistics(struct mmc_card *card);
+extern void mmc_rpm_hold(struct mmc_host *host, struct device *dev);
+extern void mmc_rpm_release(struct mmc_host *host, struct device *dev);
 
 /**
  *	mmc_claim_host - exclusively claim a host
@@ -216,4 +222,5 @@ static inline void mmc_claim_host(struct mmc_host *host)
 
 extern u32 mmc_vddrange_to_ocrmask(int vdd_min, int vdd_max);
 
+#endif /* __KERNEL__ */
 #endif /* LINUX_MMC_CORE_H */
