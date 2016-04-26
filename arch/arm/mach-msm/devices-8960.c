@@ -19,15 +19,15 @@
 #include <linux/gpio.h>
 #include <linux/coresight.h>
 #include <linux/avtimer.h>
-#include <linux/dma-mapping.h>
-#include <linux/msm-sps.h>
 #include <asm/clkdev.h>
 #include <mach/kgsl.h>
 #include <mach/irqs-8960.h>
 #include <mach/dma.h>
+#include <linux/dma-mapping.h>
 #include <mach/board.h>
 #include <mach/msm_iomap.h>
 #include <mach/msm_hsusb.h>
+#include <mach/msm_sps.h>
 #include <mach/rpm.h>
 #include <mach/msm_bus_board.h>
 #include <mach/msm_memtypes.h>
