@@ -521,8 +521,11 @@ void __handle_sysrq(int key, bool check_mask)
 		 */
 		if (!check_mask || sysrq_on_mask(op_p->enable_mask)) {
 			printk("%s\n", op_p->action_msg);
+            printk(KERN_INFO "AdrianDC : %d\n", key);
 			console_loglevel = orig_log_level;
+            printk(KERN_INFO "AdrianDC STARTING\n");
 			op_p->handler(key);
+            printk(KERN_INFO "AdrianDC ENDED\n");
 		} else {
 			printk("This sysrq operation is disabled.\n");
 		}
@@ -544,13 +547,18 @@ void __handle_sysrq(int key, bool check_mask)
 		printk("\n");
 		console_loglevel = orig_log_level;
 	}
+    printk(KERN_INFO "AdrianDC EndOfOpP\n");
 	spin_unlock_irqrestore(&sysrq_key_table_lock, flags);
+    printk(KERN_INFO "AdrianDC EndOfFunction\n");
 }
 
 void handle_sysrq(int key)
 {
-	if (sysrq_on())
+	if (sysrq_on()) {
+	    printk(KERN_INFO "AdrianDC CALL 1\n");
 		__handle_sysrq(key, true);
+	    printk(KERN_INFO "AdrianDC END 1\n");
+	}
 }
 EXPORT_SYMBOL(handle_sysrq);
 
@@ -668,7 +676,9 @@ static bool sysrq_filter(struct input_handle *handle,
 		default:
 			if (sysrq->active && value && value != 2) {
 				sysrq->need_reinject = false;
+        	    printk(KERN_INFO "AdrianDC CALL 2\n");
 				__handle_sysrq(sysrq_xlate[code], true);
+        	    printk(KERN_INFO "AdrianDC END 2\n");
 			}
 			break;
 		}
@@ -870,7 +880,9 @@ static ssize_t write_sysrq_trigger(struct file *file, const char __user *buf,
 
 		if (get_user(c, buf))
 			return -EFAULT;
+	    printk(KERN_INFO "AdrianDC CALL 3\n");
 		__handle_sysrq(c, false);
+	    printk(KERN_INFO "AdrianDC END 3\n");
 	}
 
 	return count;
